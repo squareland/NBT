@@ -9,10 +9,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.function.DoubleSupplier;
-import java.util.function.IntSupplier;
-import java.util.function.LongSupplier;
-import java.util.function.Supplier;
+import java.util.function.*;
 import java.util.regex.Pattern;
 
 public final class NBTCompound extends NBT {
@@ -352,7 +349,18 @@ public final class NBTCompound extends NBT {
     }
 
     public boolean getBoolean(String key) {
-        return getByte(key) != 0;
+        return getBoolean(key, () -> false);
+    }
+
+    public boolean getBoolean(String key, BooleanSupplier fallback) {
+        NBT tag = tags.get(key);
+        if (tag instanceof NBTPrimitive primitive) {
+            return primitive.getByte() != 0;
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.BYTE, tag.getTag());
+        }
+        return fallback.getAsBoolean();
     }
 
     public NBT removeTag(String key) {
