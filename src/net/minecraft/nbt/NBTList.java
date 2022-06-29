@@ -144,7 +144,20 @@ public final class NBTList extends NBT implements Iterable<NBT> {
     }
 
     public void push(NBT tag) {
-        throw new UnsupportedOperationException("Cannot add generic NBT tags to list");
+        switch (tag) {
+            case NBTEnd end -> {}
+            case NBTByteArray array -> push(array.getByteArray());
+            case NBTIntArray array -> push(array.getIntArray());
+            case NBTCompound compound -> push(compound);
+            case NBTList list -> push(list);
+            case NBTLong number -> push(number.getLong());
+            case NBTInt number -> push(number.getInt());
+            case NBTString string -> push(string.getString());
+            case NBTByte number -> push(number.getByte());
+            case NBTShort number -> push(number.getShort());
+            case NBTDouble number -> push(number.getDouble());
+            case NBTFloat number -> push(number.getFloat());
+        }
     }
 
     public void set(int index, String value) {
