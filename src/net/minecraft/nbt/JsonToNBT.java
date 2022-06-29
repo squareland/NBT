@@ -250,9 +250,7 @@ public class JsonToNBT {
             throw exception("Expected value");
         } else if (symbol == 'B') {
             return new NBTByteArray(readArray(Tag.BYTE_ARRAY, Tag.BYTE));
-        } else if (symbol == 'L') {
-            return new NBTLongArray(readArray(Tag.LONG_ARRAY, Tag.LONG));
-        } else if (symbol == 'I') {
+        } else if (symbol == 'I' || symbol == 'L') {
             return new NBTIntArray(readArray(Tag.INT_ARRAY, Tag.INT));
         } else {
             throw exception("Invalid array type '" + symbol + "' found");

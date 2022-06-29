@@ -133,11 +133,6 @@ public final class NBTList extends NBT implements Iterable<NBT> {
         tags.add(new NBTIntArray(value));
     }
 
-    public void push(long[] value) {
-        validate(Tag.LONG_ARRAY);
-        tags.add(new NBTLongArray(value));
-    }
-
     public void push(NBTCompound value) {
         validate(Tag.COMPOUND);
         tags.add(value);

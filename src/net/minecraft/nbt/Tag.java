@@ -16,8 +16,7 @@ public enum Tag {
     STRING(NBTString::new, () -> new NBTString("")),
     LIST(NBTList::new, NBTList::new),
     COMPOUND(NBTCompound::new, NBTCompound::new),
-    INT_ARRAY(NBTIntArray::new, () -> new NBTIntArray(new int[0])),
-    LONG_ARRAY(NBTLongArray::new, () -> new NBTLongArray(new long[0]));
+    INT_ARRAY(NBTIntArray::new, () -> new NBTIntArray(new int[0]));
 
     private final NBT.Reader reader;
     private final Supplier<NBT> empty;

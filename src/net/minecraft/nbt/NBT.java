@@ -4,7 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public sealed abstract class NBT permits NBTByteArray, NBTCompound, NBTEnd, NBTIntArray, NBTList, NBTLongArray, NBTPrimitive, NBTString {
+public sealed abstract class NBT permits NBTByteArray, NBTCompound, NBTEnd, NBTIntArray, NBTList, NBTPrimitive, NBTString {
     abstract void write(DataOutput output) throws IOException;
 
     public abstract String toString();
