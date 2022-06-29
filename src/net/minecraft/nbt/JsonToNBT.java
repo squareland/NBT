@@ -189,7 +189,7 @@ public class JsonToNBT {
             }
 
             expect(':');
-            result.setTag(s, readValue());
+            result.set(s, readValue());
 
             if (!hasElementSeparator()) {
                 break;

@@ -15,12 +15,18 @@ import java.util.regex.Pattern;
 public final class NBTCompound extends NBT {
     private static final Pattern SIMPLE_VALUE = Pattern.compile("[A-Za-z0-9._+-]+");
 
-    private final Map<String, NBT> tags = new HashMap<>();
+    private final Map<String, NBT> tags;
+
+    NBTCompound(Map<String, NBT> tags) {
+        this.tags = tags;
+    }
 
     public NBTCompound() {
+        this(new HashMap<>());
     }
 
     public NBTCompound(DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException {
+        this(new HashMap<>());
         sizeTracker.read(384L);
 
         if (depth > 512) {
@@ -93,11 +99,8 @@ public final class NBTCompound extends NBT {
         return this.tags.size();
     }
 
-    public void setTag(String key, NBT value) {
-        if (value == null) {
-            throw new IllegalArgumentException("Invalid null NBT value with key " + key);
-        }
-        this.tags.put(key, value);
+    public void set(String key, NBT value) {
+        this.tags.put(key, Objects.requireNonNull(value, "Invalid null NBT value with key " + key));
     }
 
     public void setByte(String key, byte value) {
@@ -117,16 +120,16 @@ public final class NBTCompound extends NBT {
     }
 
     public void setUniqueId(String key, UUID value) {
-        this.setLong(key + "Most", value.getMostSignificantBits());
-        this.setLong(key + "Least", value.getLeastSignificantBits());
+        setLong(key + "Most", value.getMostSignificantBits());
+        setLong(key + "Least", value.getLeastSignificantBits());
     }
 
     public UUID getUniqueId(String key) {
-        return new UUID(this.getLong(key + "Most"), this.getLong(key + "Least"));
+        return new UUID(getLong(key + "Most"), getLong(key + "Least"));
     }
 
     public boolean hasUniqueId(String key) {
-        return this.hasNumericKey(key + "Most") && this.hasNumericKey(key + "Least");
+        return hasNumericKey(key + "Most") && hasNumericKey(key + "Least");
     }
 
     public void setFloat(String key, float value) {
@@ -161,7 +164,7 @@ public final class NBTCompound extends NBT {
         this.setByte(key, (byte) (value ? 1 : 0));
     }
 
-    public NBT getTag(String key) {
+    public NBT get(String key) {
         return tags.get(key);
     }
 
@@ -363,7 +366,7 @@ public final class NBTCompound extends NBT {
         return fallback.getAsBoolean();
     }
 
-    public NBT removeTag(String key) {
+    public NBT remove(String key) {
         return tags.remove(key);
     }
 
@@ -390,9 +393,9 @@ public final class NBTCompound extends NBT {
 
     @Override
     public NBTCompound copy() {
-        NBTCompound copy = new NBTCompound();
+        NBTCompound copy = new NBTCompound(new HashMap<>(tags.size()));
         for (Map.Entry<String, NBT> e : tags.entrySet()) {
-            copy.setTag(e.getKey(), e.getValue().copy());
+            copy.set(e.getKey(), e.getValue().copy());
         }
         return copy;
     }
@@ -415,10 +418,10 @@ public final class NBTCompound extends NBT {
                 if (tags.get(key) instanceof NBTCompound pair) {
                     pair.merge(compound);
                 } else {
-                    setTag(key, value.copy());
+                    set(key, value.copy());
                 }
             } else {
-                setTag(key, value.copy());
+                set(key, value.copy());
             }
         }
     }
