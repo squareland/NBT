@@ -1,18 +1,12 @@
 package net.minecraft.nbt;
 
-import net.minecraft.nbt.factory.ByteSupplier;
-import net.minecraft.nbt.factory.FloatSupplier;
-import net.minecraft.nbt.factory.ShortSupplier;
-
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.util.*;
-import java.util.function.*;
 import java.util.regex.Pattern;
 
-public final class NBTCompound extends NBT {
+public final class NBTCompound extends NBT implements CompoundRead, CompoundWrite {
     private static final Pattern SIMPLE_VALUE = Pattern.compile("[A-Za-z0-9._+-]+");
 
     private final Map<String, NBT> tags;
@@ -96,278 +90,33 @@ public final class NBTCompound extends NBT {
     }
 
     public int size() {
-        return this.tags.size();
+        return tags.size();
     }
 
+    @Override
     public void set(String key, NBT value) {
-        this.tags.put(key, Objects.requireNonNull(value, "Invalid null NBT value with key " + key));
+        tags.put(key, value);
     }
 
-    public void setByte(String key, byte value) {
-        this.tags.put(key, new NBTByte(value));
-    }
-
-    public void setShort(String key, short value) {
-        this.tags.put(key, new NBTShort(value));
-    }
-
-    public void setInteger(String key, int value) {
-        this.tags.put(key, new NBTInt(value));
-    }
-
-    public void setLong(String key, long value) {
-        this.tags.put(key, new NBTLong(value));
-    }
-
-    public void setUniqueId(String key, UUID value) {
-        setLong(key + "Most", value.getMostSignificantBits());
-        setLong(key + "Least", value.getLeastSignificantBits());
-    }
-
-    public UUID getUniqueId(String key) {
-        return new UUID(getLong(key + "Most"), getLong(key + "Least"));
-    }
-
-    public boolean hasUniqueId(String key) {
-        return hasNumericKey(key + "Most") && hasNumericKey(key + "Least");
-    }
-
-    public void setFloat(String key, float value) {
-        this.tags.put(key, new NBTFloat(value));
-    }
-
-    public void setDouble(String key, double value) {
-        this.tags.put(key, new NBTDouble(value));
-    }
-
-    public void setString(String key, String value) {
-        this.tags.put(key, new NBTString(value));
-    }
-
-    public void setByteArray(String key, byte[] value) {
-        this.tags.put(key, new NBTByteArray(value));
-    }
-
-    public void setByteArray(String key, List<Byte> value) {
-        this.tags.put(key, new NBTByteArray(value));
-    }
-
-    public void setByteArray(String key, ByteBuffer value) {
-        this.tags.put(key, new NBTByteArray(value));
-    }
-
-    public void setIntArray(String key, int[] value) {
-        this.tags.put(key, new NBTIntArray(value));
-    }
-
-    public void setBoolean(String key, boolean value) {
-        this.setByte(key, (byte) (value ? 1 : 0));
-    }
-
+    @Override
     public NBT get(String key) {
         return tags.get(key);
     }
 
+    @Override
+    public NBT remove(String key) {
+        return tags.remove(key);
+    }
+
+    @Override
     public Tag getTagId(String key) {
         NBT tag = tags.get(key);
         return tag == null ? Tag.END : tag.getTag();
     }
 
+    @Override
     public boolean hasKey(String key) {
-        return this.tags.containsKey(key);
-    }
-
-    public boolean hasKey(String key, Tag tag) {
-        Tag type = getTagId(key);
-        return type == tag;
-    }
-
-    public boolean hasNumericKey(String key) {
-        Tag type = getTagId(key);
-        return type == Tag.BYTE || type == Tag.SHORT || type == Tag.INT || type == Tag.LONG || type == Tag.FLOAT || type == Tag.DOUBLE;
-    }
-
-    public byte getByte(String key) {
-        return getByte(key, () -> (byte) 0);
-    }
-
-    public byte getByte(String key, ByteSupplier fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTPrimitive primitive) {
-            return primitive.getByte();
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.BYTE, tag.getTag());
-        }
-        return fallback.getAsByte();
-    }
-
-    public short getShort(String key) {
-        return getShort(key, () -> (short) 0);
-    }
-
-    public short getShort(String key, ShortSupplier fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTPrimitive primitive) {
-            return primitive.getShort();
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.SHORT, tag.getTag());
-        }
-        return fallback.getAsShort();
-    }
-
-    public int getInteger(String key) {
-        return getInteger(key, () -> 0);
-    }
-
-    public int getInteger(String key, IntSupplier fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTPrimitive primitive) {
-            return primitive.getInt();
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.INT, tag.getTag());
-        }
-        return fallback.getAsInt();
-    }
-
-    public long getLong(String key) {
-        return getLong(key, () -> 0);
-    }
-
-    public long getLong(String key, LongSupplier fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTPrimitive primitive) {
-            return primitive.getLong();
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.LONG, tag.getTag());
-        }
-        return fallback.getAsLong();
-    }
-
-    public float getFloat(String key) {
-        return getFloat(key, () -> 0);
-    }
-
-    public float getFloat(String key, FloatSupplier fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTPrimitive primitive) {
-            return primitive.getFloat();
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.FLOAT, tag.getTag());
-        }
-        return fallback.getAsFloat();
-    }
-
-    public double getDouble(String key) {
-        return getDouble(key, () -> 0);
-    }
-
-    public double getDouble(String key, DoubleSupplier fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTPrimitive primitive) {
-            return primitive.getDouble();
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.DOUBLE, tag.getTag());
-        }
-        return fallback.getAsDouble();
-    }
-
-    public String getString(String key) {
-        return getString(key, String::new);
-    }
-
-    public String getString(String key, Supplier<String> fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTString string) {
-            return string.getString();
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.STRING, tag.getTag());
-        }
-        return fallback.get();
-    }
-
-    public byte[] getByteArray(String key) {
-        return getByteArray(key, () -> new byte[0]);
-    }
-
-    public byte[] getByteArray(String key, Supplier<byte[]> fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTByteArray array) {
-            return array.getByteArray();
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.BYTE_ARRAY, tag.getTag());
-        }
-        return fallback.get();
-    }
-
-    public int[] getIntArray(String key) {
-        return getIntArray(key, () -> new int[0]);
-    }
-
-    public int[] getIntArray(String key, Supplier<int[]> fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTIntArray array) {
-            return array.getIntArray();
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.INT_ARRAY, tag.getTag());
-        }
-        return fallback.get();
-    }
-
-    public NBTCompound getCompound(String key) {
-        return getCompound(key, NBTCompound::new);
-    }
-
-    public NBTCompound getCompound(String key, Supplier<NBTCompound> fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTCompound compound) {
-            return compound;
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.COMPOUND, tag.getTag());
-        }
-        return fallback.get();
-    }
-
-    public NBTList getTagList(String key, Tag type) {
-        return getTagList(key, type, NBTList::new);
-    }
-
-    public NBTList getTagList(String key, Tag type, Supplier<NBTList> fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTList list) {
-            if (list.isEmpty() || list.getTagType() == type) {
-                return list;
-            }
-        }
-        return fallback.get();
-    }
-
-    public boolean getBoolean(String key) {
-        return getBoolean(key, () -> false);
-    }
-
-    public boolean getBoolean(String key, BooleanSupplier fallback) {
-        NBT tag = tags.get(key);
-        if (tag instanceof NBTPrimitive primitive) {
-            return primitive.getByte() != 0;
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.BYTE, tag.getTag());
-        }
-        return fallback.getAsBoolean();
-    }
-
-    public NBT remove(String key) {
-        return tags.remove(key);
+        return tags.containsKey(key);
     }
 
     @Override
