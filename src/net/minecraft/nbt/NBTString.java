@@ -55,7 +55,7 @@ public final class NBTString extends NBT {
 
     @Override
     public NBTString copy() {
-        return new NBTString(this.data);
+        return this;
     }
 
     @Override

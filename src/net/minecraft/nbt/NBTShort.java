@@ -32,7 +32,7 @@ public final class NBTShort extends NBTPrimitive {
 
     @Override
     public NBTShort copy() {
-        return new NBTShort(this.data);
+        return this;
     }
 
     @Override

@@ -32,7 +32,7 @@ public final class NBTLong extends NBTPrimitive {
 
     @Override
     public NBTLong copy() {
-        return new NBTLong(this.data);
+        return this;
     }
 
     @Override

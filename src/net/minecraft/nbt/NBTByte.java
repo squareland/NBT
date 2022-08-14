@@ -32,7 +32,7 @@ public final class NBTByte extends NBTPrimitive {
 
     @Override
     public NBTByte copy() {
-        return new NBTByte(data);
+        return this;
     }
 
     @Override

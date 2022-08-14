@@ -33,7 +33,7 @@ public final class NBTInt extends NBTPrimitive {
 
     @Override
     public NBTInt copy() {
-        return new NBTInt(data);
+        return this;
     }
 
     @Override

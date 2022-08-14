@@ -32,7 +32,7 @@ public final class NBTDouble extends NBTPrimitive {
 
     @Override
     public NBTDouble copy() {
-        return new NBTDouble(data);
+        return this;
     }
 
     @Override

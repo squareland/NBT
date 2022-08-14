@@ -27,6 +27,6 @@ public final class NBTEnd extends NBT {
 
     @Override
     public NBTEnd copy() {
-        return new NBTEnd();
+        return this;
     }
 }

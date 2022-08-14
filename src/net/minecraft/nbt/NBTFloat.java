@@ -32,7 +32,7 @@ public final class NBTFloat extends NBTPrimitive {
 
     @Override
     public NBTFloat copy() {
-        return new NBTFloat(data);
+        return this;
     }
 
     public boolean equals(Object other) {
