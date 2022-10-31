@@ -32,6 +32,10 @@ public sealed interface CompoundWrite extends CompoundWriteObsolete permits NBTC
         setUnchecked(key, value);
     }
 
+    default void set(KeyBoolean key, boolean value) {
+        setUnchecked(key, new NBTByte((byte) (value ? 1 : 0)));
+    }
+
     default void set(KeyByte key, byte value) {
         setUnchecked(key, new NBTByte(value));
     }
