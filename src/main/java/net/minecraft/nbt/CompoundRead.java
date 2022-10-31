@@ -24,6 +24,21 @@ public sealed interface CompoundRead extends CompoundReadObsolete permits NBTCom
         return get(key.getName());
     }
 
+    default NBTCompound get(KeyCompound key) {
+        return get(key, NBTCompound::new);
+    }
+
+    default NBTCompound get(KeyCompound key, Supplier<NBTCompound> fallback) {
+        NBT<?> tag = getUnchecked(key);
+        if (tag instanceof NBTCompound compound) {
+            return compound;
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.COMPOUND, tag.getTag());
+        }
+        return fallback.get();
+    }
+
     default NBTList get(KeyList key) {
         return get(key, NBTList::new);
     }
@@ -34,6 +49,9 @@ public sealed interface CompoundRead extends CompoundReadObsolete permits NBTCom
             if (list.isEmpty() || list.getTagType() == key.getElementTag()) {
                 return list;
             }
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.LIST, tag.getTag());
         }
         return fallback.get();
     }
