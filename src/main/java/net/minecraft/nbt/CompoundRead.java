@@ -24,6 +24,20 @@ public sealed interface CompoundRead extends CompoundReadObsolete permits NBTCom
         return get(key.getName());
     }
 
+    default NBTList get(KeyList key) {
+        return get(key, NBTList::new);
+    }
+
+    default NBTList get(KeyList key, Supplier<NBTList> fallback) {
+        NBT<?> tag = getUnchecked(key);
+        if (tag instanceof NBTList list) {
+            if (list.isEmpty() || list.getTagType() == key.getElementTag()) {
+                return list;
+            }
+        }
+        return fallback.get();
+    }
+
     default String get(KeyString key) {
         return get(key, "");
     }

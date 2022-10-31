@@ -57,8 +57,8 @@ public class Key<N extends NBT<?>> {
         return new KeyCompound(name);
     }
 
-    public static KeyList ofList(String name) {
-        return new KeyList(name);
+    public static KeyList ofList(String name, Tag elementTag) {
+        return new KeyList(name, elementTag);
     }
 
     public String getName() {
