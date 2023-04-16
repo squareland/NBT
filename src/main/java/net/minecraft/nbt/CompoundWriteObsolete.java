@@ -3,11 +3,21 @@ package net.minecraft.nbt;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiFunction;
 
 @Deprecated
 public interface CompoundWriteObsolete {
     @Deprecated
     void set(String key, NBT<?> value);
+
+    @Deprecated
+    NBT<?> replace(String key, NBT<?> value);
+
+    @Deprecated
+    NBT<?> merge(String key, NBT<?> value, BiFunction<? super NBT<?>, ? super NBT<?>, ? extends NBT<?>> mapping);
+
+    @Deprecated
+    NBT<?> compute(String key, BiFunction<String, ? super NBT<?>, ? extends NBT<?>> mapping);
 
     @Deprecated
     NBT<?> remove(String key);

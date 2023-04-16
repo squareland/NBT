@@ -4,6 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.regex.Pattern;
 
 public final class NBTCompound extends NBT<Map<String, NBT<?>>> implements CompoundRead, CompoundWrite {
@@ -101,6 +102,21 @@ public final class NBTCompound extends NBT<Map<String, NBT<?>>> implements Compo
     @Override
     public NBT<?> get(String key) {
         return tags.get(key);
+    }
+
+    @Override
+    public NBT<?> replace(String key, NBT<?> value) {
+        return tags.replace(key, value);
+    }
+
+    @Override
+    public NBT<?> merge(String key, NBT<?> value, BiFunction<? super NBT<?>, ? super NBT<?>, ? extends NBT<?>> mapping) {
+        return tags.merge(key, value, mapping);
+    }
+
+    @Override
+    public NBT<?> compute(String key, BiFunction<String, ? super NBT<?>, ? extends NBT<?>> mapping) {
+        return tags.compute(key, mapping);
     }
 
     @Override
