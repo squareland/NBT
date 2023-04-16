@@ -65,9 +65,17 @@ public sealed interface CompoundWrite extends CompoundWriteObsolete permits NBTC
     }
 
     default byte increment(KeyByte key, byte quantity) {
+        return increment(key, quantity, Byte.MAX_VALUE, Byte.MIN_VALUE);
+    }
+
+    default byte increment(KeyByte key, byte quantity, byte max) {
+        return increment(key, quantity, max, Byte.MIN_VALUE);
+    }
+
+    default byte increment(KeyByte key, byte quantity, byte max, byte min) {
         NBT<?> tag = compute(key.getName(), (k, old) -> {
             if (old instanceof NBTPrimitive<?> primitive) {
-                return new NBTByte((byte) (primitive.getByte() + quantity));
+                return new NBTByte((byte) Math.max(min, Math.min(max, (primitive.getByte() + quantity))));
             }
             if (old != null) {
                 throw new TagMismatchException(k, Tag.BYTE, old.getTag());
@@ -82,13 +90,25 @@ public sealed interface CompoundWrite extends CompoundWriteObsolete permits NBTC
     }
 
     default byte decrement(KeyByte key, byte quantity) {
-        return increment(key, (byte) -quantity);
+        return increment(key, (byte) -quantity, Byte.MAX_VALUE, Byte.MIN_VALUE);
+    }
+
+    default byte decrement(KeyByte key, byte quantity, byte min) {
+        return increment(key, (byte) -quantity, Byte.MAX_VALUE, min);
     }
 
     default short increment(KeyShort key, short quantity) {
+        return increment(key, quantity, Short.MAX_VALUE, Short.MIN_VALUE);
+    }
+
+    default short increment(KeyShort key, short quantity, short max) {
+        return increment(key, quantity, max, Short.MIN_VALUE);
+    }
+
+    default short increment(KeyShort key, short quantity, short max, short min) {
         NBT<?> tag = compute(key.getName(), (k, old) -> {
             if (old instanceof NBTPrimitive<?> primitive) {
-                return new NBTShort((short) (primitive.getShort() + quantity));
+                return new NBTShort((short) Math.max(min, Math.min(max, (primitive.getShort() + quantity))));
             }
             if (old != null) {
                 throw new TagMismatchException(k, Tag.SHORT, old.getTag());
@@ -103,13 +123,25 @@ public sealed interface CompoundWrite extends CompoundWriteObsolete permits NBTC
     }
 
     default short decrement(KeyShort key, short quantity) {
-        return increment(key, (short) -quantity);
+        return increment(key, (short) -quantity, Short.MAX_VALUE, Short.MIN_VALUE);
+    }
+
+    default short decrement(KeyShort key, short quantity, short min) {
+        return increment(key, (short) -quantity, Short.MAX_VALUE, min);
     }
 
     default int increment(KeyInt key, int quantity) {
+        return increment(key, quantity, Integer.MAX_VALUE, Integer.MIN_VALUE);
+    }
+
+    default int increment(KeyInt key, int quantity, int max) {
+        return increment(key, quantity, max, Integer.MIN_VALUE);
+    }
+
+    default int increment(KeyInt key, int quantity, int max, int min) {
         NBT<?> tag = compute(key.getName(), (k, old) -> {
             if (old instanceof NBTPrimitive<?> primitive) {
-                return new NBTInt(primitive.getInt() + quantity);
+                return new NBTInt(Math.max(min, Math.min(max, (primitive.getInt() + quantity))));
             }
             if (old != null) {
                 throw new TagMismatchException(k, Tag.INT, old.getTag());
@@ -124,7 +156,11 @@ public sealed interface CompoundWrite extends CompoundWriteObsolete permits NBTC
     }
 
     default int decrement(KeyInt key, int quantity) {
-        return increment(key, -quantity);
+        return increment(key, -quantity, Integer.MAX_VALUE, Integer.MIN_VALUE);
+    }
+
+    default int decrement(KeyInt key, int quantity, int min) {
+        return increment(key, -quantity, Integer.MAX_VALUE, min);
     }
 
     default long increment(KeyLong key, long quantity) {
