@@ -8,8 +8,8 @@ public sealed interface CompoundWrite extends CompoundWriteObsolete permits NBTC
         return (T) tag.get();
     }
 
-    default <T, N extends NBT<T>> void drop(Key<N> key) {
-        remove(key.getName());
+    default <T, N extends NBT<T>> boolean drop(Key<N> key) {
+        return remove(key.getName()) != null;
     }
 
     default void setUnchecked(Key<?> key, NBT<?> value) {
