@@ -5,6 +5,7 @@ import net.minecraft.nbt.factory.FloatSupplier;
 import net.minecraft.nbt.factory.ShortSupplier;
 import net.minecraft.nbt.key.*;
 
+import java.util.UUID;
 import java.util.function.*;
 
 public sealed interface CompoundRead extends CompoundReadObsolete permits NBTCompound {
@@ -67,6 +68,27 @@ public sealed interface CompoundRead extends CompoundReadObsolete permits NBTCom
         }
         if (tag != null) {
             throw new TagMismatchException(key, Tag.STRING, tag.getTag());
+        }
+        return fallback;
+    }
+
+    default UUID getUUID(KeyLong key) {
+        return getUUID(key, null);
+    }
+
+    default UUID getUUID(KeyLong key, UUID fallback) {
+        NBT<?> most = get(key.getName() + "Most");
+        if (most instanceof NBTLong m) {
+            NBT<?> least = get(key.getName() + "Least");
+            if (least instanceof NBTLong l) {
+                return new UUID(m.get(), l.get());
+            }
+            if (least != null) {
+                throw new TagMismatchException(key, Tag.LONG, least.getTag());
+            }
+        }
+        if (most != null) {
+            throw new TagMismatchException(key, Tag.LONG, most.getTag());
         }
         return fallback;
     }

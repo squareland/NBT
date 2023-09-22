@@ -2,6 +2,8 @@ package net.minecraft.nbt;
 
 import net.minecraft.nbt.key.*;
 
+import java.util.UUID;
+
 public sealed interface CompoundWrite extends CompoundWriteObsolete permits NBTCompound {
     default <T, N extends NBT<T>> T remove(Key<N> key) {
         NBT<?> tag = remove(key.getName());
@@ -18,6 +20,11 @@ public sealed interface CompoundWrite extends CompoundWriteObsolete permits NBTC
 
     default void set(KeyString key, String value) {
         setUnchecked(key, new NBTString(value));
+    }
+
+    default void setUUID(KeyLong key, UUID value) {
+        set(key.getName() + "Most", new NBTLong(value.getMostSignificantBits()));
+        set(key.getName() + "Least", new NBTLong(value.getLeastSignificantBits()));
     }
 
     default void set(KeyByteArray key, byte[] value) {
