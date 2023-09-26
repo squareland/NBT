@@ -7,7 +7,7 @@ public class Node<T> {
     private final boolean isStart;
     private final List<Node<T>> children = new ArrayList<>();
     private Node<T> parent;
-    private final String name;
+    private String name;
     private T element;
     private boolean drawChildren;
 
@@ -50,6 +50,10 @@ public class Node<T> {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public T get() {
