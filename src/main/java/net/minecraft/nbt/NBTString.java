@@ -5,7 +5,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Objects;
 
-public final class NBTString extends NBT<String> {
+public final class NBTString extends NBT<String> implements Comparable<NBTString> {
     private final String data;
 
     public NBTString() {
@@ -86,5 +86,10 @@ public final class NBTString extends NBT<String> {
     @Override
     public String getString() {
         return this.data;
+    }
+
+    @Override
+    public int compareTo(NBTString o) {
+        return data.compareTo(o.data);
     }
 }

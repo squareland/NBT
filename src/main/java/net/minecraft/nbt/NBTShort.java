@@ -4,7 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public final class NBTShort extends NBTPrimitive<Short> {
+public final class NBTShort extends NBTPrimitive<Short> implements Comparable<NBTShort> {
     private final short data;
 
     public NBTShort(DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException {
@@ -78,5 +78,10 @@ public final class NBTShort extends NBTPrimitive<Short> {
     @Override
     public float getFloat() {
         return this.data;
+    }
+
+    @Override
+    public int compareTo(NBTShort o) {
+        return Short.compare(data, o.data);
     }
 }

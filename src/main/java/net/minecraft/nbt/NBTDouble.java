@@ -4,7 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public final class NBTDouble extends NBTPrimitive<Double> {
+public final class NBTDouble extends NBTPrimitive<Double> implements Comparable<NBTDouble> {
     private final double data;
 
     public NBTDouble(double data) {
@@ -79,5 +79,10 @@ public final class NBTDouble extends NBTPrimitive<Double> {
     @Override
     public float getFloat() {
         return (float) data;
+    }
+
+    @Override
+    public int compareTo(NBTDouble o) {
+        return Double.compare(data, o.data);
     }
 }

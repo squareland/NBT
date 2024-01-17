@@ -4,7 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public final class NBTByte extends NBTPrimitive<Byte> {
+public final class NBTByte extends NBTPrimitive<Byte> implements Comparable<NBTByte> {
     private final byte data;
 
     public NBTByte(DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException {
@@ -78,5 +78,10 @@ public final class NBTByte extends NBTPrimitive<Byte> {
     @Override
     public float getFloat() {
         return data;
+    }
+
+    @Override
+    public int compareTo(NBTByte o) {
+        return Byte.compare(data, o.data);
     }
 }

@@ -4,7 +4,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public final class NBTLong extends NBTPrimitive<Long> {
+public final class NBTLong extends NBTPrimitive<Long> implements Comparable<NBTLong> {
     private final long data;
 
     public NBTLong(long data) {
@@ -78,5 +78,10 @@ public final class NBTLong extends NBTPrimitive<Long> {
     @Override
     public float getFloat() {
         return (float) this.data;
+    }
+
+    @Override
+    public int compareTo(NBTLong o) {
+        return Long.compare(data, o.data);
     }
 }
