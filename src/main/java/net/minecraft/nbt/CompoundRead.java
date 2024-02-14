@@ -8,7 +8,7 @@ import net.minecraft.nbt.key.*;
 import java.util.UUID;
 import java.util.function.*;
 
-public sealed interface CompoundRead extends CompoundReadObsolete permits NBTCompound {
+public interface CompoundRead extends CompoundReadObsolete {
     default boolean hasUnchecked(Key<?> key) {
         return hasKey(key.getName());
     }

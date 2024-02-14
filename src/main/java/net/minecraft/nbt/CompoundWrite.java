@@ -4,7 +4,7 @@ import net.minecraft.nbt.key.*;
 
 import java.util.UUID;
 
-public sealed interface CompoundWrite extends CompoundWriteObsolete permits NBTCompound {
+public interface CompoundWrite extends CompoundWriteObsolete {
     default <T, N extends NBT<T>> T remove(Key<N> key) {
         NBT<?> tag = remove(key.getName());
         return (T) tag.get();
