@@ -7,7 +7,7 @@ import java.util.UUID;
 public interface CompoundWrite extends CompoundWriteObsolete {
     default <T, N extends NBT<T>> T remove(Key<N> key) {
         NBT<?> tag = remove(key.getName());
-        return (T) tag.get();
+        return tag == null ? null : (T) tag.get();
     }
 
     default <T, N extends NBT<T>> boolean drop(Key<N> key) {
