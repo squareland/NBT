@@ -67,6 +67,10 @@ public class Key<N extends NBT<?>> {
         return new KeyTyped<>(name, wrappedType, factory);
     }
 
+    public static <W extends CompoundWrapper> KeyTypedList<W> ofTypeList(String name, Class<W> wrappedType, Function<NBTCompound, W> factory) {
+        return new KeyTypedList<>(name, wrappedType, factory);
+    }
+
     public String getName() {
         return name;
     }

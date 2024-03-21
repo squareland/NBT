@@ -6,17 +6,17 @@ import net.minecraft.nbt.NBTCompound;
 import java.util.function.Function;
 
 public class KeyTyped<W extends CompoundWrapper> extends KeyCompound {
-    private final Class<W> wrapperType;
+    private final Class<W> wrappedType;
     private final Function<NBTCompound, W> factory;
 
-    KeyTyped(String name, Class<W> wrapperType, Function<NBTCompound, W> factory) {
+    KeyTyped(String name, Class<W> wrappedType, Function<NBTCompound, W> factory) {
         super(name);
-        this.wrapperType = wrapperType;
+        this.wrappedType = wrappedType;
         this.factory = factory;
     }
 
-    public Class<W> getWrapperType() {
-        return wrapperType;
+    public Class<W> getWrappedType() {
+        return wrappedType;
     }
 
     public W bake(NBTCompound tag) {

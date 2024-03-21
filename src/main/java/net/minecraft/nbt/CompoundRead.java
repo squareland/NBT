@@ -25,21 +25,6 @@ public interface CompoundRead extends CompoundReadObsolete {
         return get(key.getName());
     }
 
-    default <W extends CompoundWrapper> W get(KeyTyped<W> key) {
-        return get(key, NBTCompound::new);
-    }
-
-    default <W extends CompoundWrapper> W get(KeyTyped<W> key, Supplier<NBTCompound> fallback) {
-        NBT<?> tag = getUnchecked(key);
-        if (tag instanceof NBTCompound compound) {
-            return key.bake(compound);
-        }
-        if (tag != null) {
-            throw new TagMismatchException(key, Tag.COMPOUND, tag.getTag());
-        }
-        return key.bake(fallback.get());
-    }
-
     default NBTCompound get(KeyCompound key) {
         return get(key, NBTCompound::new);
     }
@@ -53,6 +38,21 @@ public interface CompoundRead extends CompoundReadObsolete {
             throw new TagMismatchException(key, Tag.COMPOUND, tag.getTag());
         }
         return fallback.get();
+    }
+
+    default <W extends CompoundWrapper> W get(KeyTyped<W> key) {
+        return get(key, NBTCompound::new);
+    }
+
+    default <W extends CompoundWrapper> W get(KeyTyped<W> key, Supplier<NBTCompound> fallback) {
+        NBT<?> tag = getUnchecked(key);
+        if (tag instanceof NBTCompound compound) {
+            return key.bake(compound);
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.COMPOUND, tag.getTag());
+        }
+        return key.bake(fallback.get());
     }
 
     default NBTList get(KeyList key) {
@@ -70,6 +70,23 @@ public interface CompoundRead extends CompoundReadObsolete {
             throw new TagMismatchException(key, Tag.LIST, tag.getTag());
         }
         return fallback.get();
+    }
+
+    default <W extends CompoundWrapper> TypedList<W> get(KeyTypedList<W> key) {
+        return get(key, NBTList::new);
+    }
+
+    default <W extends CompoundWrapper> TypedList<W> get(KeyTypedList<W> key, Supplier<NBTList> fallback) {
+        NBT<?> tag = getUnchecked(key);
+        if (tag instanceof NBTList list) {
+            if (list.isEmpty() || list.getTagType() == key.getElementTag()) {
+                return key.bake(list);
+            }
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.LIST, tag.getTag());
+        }
+        return key.bake(fallback.get());
     }
 
     default String get(KeyString key) {

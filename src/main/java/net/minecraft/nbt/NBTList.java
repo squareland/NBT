@@ -178,8 +178,12 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
         return this.tags.isEmpty();
     }
 
+    public void clear() {
+        this.tags.clear();
+    }
+
     public NBTCompound getCompound(int index) {
-        NBT tag = tags.get(index);
+        NBT<?> tag = tags.get(index);
         if (tag instanceof NBTCompound compound) {
             return compound;
         }
@@ -190,8 +194,8 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
     }
 
     public int getInt(int index) {
-        NBT tag = tags.get(index);
-        if (tag instanceof NBTPrimitive primitive) {
+        NBT<?> tag = tags.get(index);
+        if (tag instanceof NBTPrimitive<?> primitive) {
             return primitive.getInt();
         }
         if (tag != null) {
@@ -201,7 +205,7 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
     }
 
     public int[] getIntArray(int index) {
-        NBT tag = tags.get(index);
+        NBT<?> tag = tags.get(index);
         if (tag instanceof NBTIntArray array) {
             return array.getIntArray();
         }
@@ -212,8 +216,8 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
     }
 
     public double getDouble(int index) {
-        NBT tag = tags.get(index);
-        if (tag instanceof NBTPrimitive primitive) {
+        NBT<?> tag = tags.get(index);
+        if (tag instanceof NBTPrimitive<?> primitive) {
             return primitive.getDouble();
         }
         if (tag != null) {
@@ -223,8 +227,8 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
     }
 
     public float getFloat(int index) {
-        NBT tag = tags.get(index);
-        if (tag instanceof NBTPrimitive primitive) {
+        NBT<?> tag = tags.get(index);
+        if (tag instanceof NBTPrimitive<?> primitive) {
             return primitive.getFloat();
         }
         if (tag != null) {
@@ -234,7 +238,7 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
     }
 
     public String getString(int index) {
-        NBT tag = tags.get(index);
+        NBT<?> tag = tags.get(index);
         if (tag instanceof NBTString string) {
             return string.getString();
         }
