@@ -22,7 +22,7 @@ public class KeyTypedList<W extends CompoundWrapper> extends KeyList {
         return wrappedType;
     }
 
-    public TypedList<W> bake(NBTList tag) {
+    public TypedList<W> wrap(NBTList tag) {
         return tag == null ? null : new TypedList<>(wrappedType, factory, tag);
     }
 }

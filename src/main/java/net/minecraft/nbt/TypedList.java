@@ -7,7 +7,7 @@ import java.util.function.Function;
 public class TypedList<W extends CompoundWrapper> implements Iterable<W> {
     private final Class<W> wrappedType;
     private final Function<NBTCompound, W> factory;
-    private final NBTList list;
+    final NBTList list;
 
     public TypedList(Class<W> wrappedType, Function<NBTCompound, W> factory, NBTList list) {
         this.wrappedType = wrappedType;

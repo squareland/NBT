@@ -39,8 +39,16 @@ public interface CompoundWrite extends CompoundWriteObsolete {
         setUnchecked(key, value);
     }
 
+    default <W extends CompoundWrapper> void set(KeyTyped<W> key, W value) {
+        setUnchecked(key, value.tag);
+    }
+
     default void set(KeyList key, NBTList value) {
         setUnchecked(key, value);
+    }
+
+    default <W extends CompoundWrapper> void set(KeyTypedList<W> key, TypedList<W> value) {
+        setUnchecked(key, value.list);
     }
 
     default void set(KeyBoolean key, boolean value) {

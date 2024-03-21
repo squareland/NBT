@@ -19,7 +19,7 @@ public class KeyTyped<W extends CompoundWrapper> extends KeyCompound {
         return wrappedType;
     }
 
-    public W bake(NBTCompound tag) {
+    public W wrap(NBTCompound tag) {
         return tag == null ? null : factory.apply(tag);
     }
 }

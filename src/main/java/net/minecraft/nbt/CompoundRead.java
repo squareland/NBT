@@ -47,12 +47,12 @@ public interface CompoundRead extends CompoundReadObsolete {
     default <W extends CompoundWrapper> W get(KeyTyped<W> key, Supplier<NBTCompound> fallback) {
         NBT<?> tag = getUnchecked(key);
         if (tag instanceof NBTCompound compound) {
-            return key.bake(compound);
+            return key.wrap(compound);
         }
         if (tag != null) {
             throw new TagMismatchException(key, Tag.COMPOUND, tag.getTag());
         }
-        return key.bake(fallback.get());
+        return key.wrap(fallback.get());
     }
 
     default NBTList get(KeyList key) {
@@ -80,13 +80,13 @@ public interface CompoundRead extends CompoundReadObsolete {
         NBT<?> tag = getUnchecked(key);
         if (tag instanceof NBTList list) {
             if (list.isEmpty() || list.getTagType() == key.getElementTag()) {
-                return key.bake(list);
+                return key.wrap(list);
             }
         }
         if (tag != null) {
             throw new TagMismatchException(key, Tag.LIST, tag.getTag());
         }
-        return key.bake(fallback.get());
+        return key.wrap(fallback.get());
     }
 
     default String get(KeyString key) {
