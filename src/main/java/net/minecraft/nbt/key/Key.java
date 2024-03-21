@@ -2,6 +2,8 @@ package net.minecraft.nbt.key;
 
 import net.minecraft.nbt.*;
 
+import java.util.function.Function;
+
 public class Key<N extends NBT<?>> {
     private final String name;
     private final Class<N> type;
@@ -59,6 +61,10 @@ public class Key<N extends NBT<?>> {
 
     public static KeyList ofList(String name, Tag elementTag) {
         return new KeyList(name, elementTag);
+    }
+
+    public static <W extends CompoundWrapper> KeyTyped<W> ofType(String name, Class<W> wrappedType, Function<NBTCompound, W> factory) {
+        return new KeyTyped<>(name, wrappedType, factory);
     }
 
     public String getName() {
