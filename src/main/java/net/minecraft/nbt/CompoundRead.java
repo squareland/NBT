@@ -55,6 +55,17 @@ public interface CompoundRead extends CompoundReadObsolete {
         return key.wrap(fallback.get());
     }
 
+    default <W extends CompoundWrapper> W getOrNull(KeyTyped<W> key) {
+        NBT<?> tag = get(key.getName());
+        if (tag instanceof NBTCompound compound) {
+            return key.wrap(compound);
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.COMPOUND, tag.getTag());
+        }
+        return null;
+    }
+
     default NBTList get(KeyList key) {
         return get(key, NBTList::new);
     }
@@ -87,6 +98,19 @@ public interface CompoundRead extends CompoundReadObsolete {
             throw new TagMismatchException(key, Tag.LIST, tag.getTag());
         }
         return key.wrap(fallback.get());
+    }
+
+    default <W extends CompoundWrapper> TypedList<W> getOrNull(KeyTypedList<W> key) {
+        NBT<?> tag = getUnchecked(key);
+        if (tag instanceof NBTList list) {
+            if (list.isEmpty() || list.getTagType() == key.getElementTag()) {
+                return key.wrap(list);
+            }
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.LIST, tag.getTag());
+        }
+        return null;
     }
 
     default String get(KeyString key) {
