@@ -25,7 +25,7 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
         this.tag = Tag.COMPOUND;
         this.tags = new ArrayList<>(source.size());
         for (int i = 0; i < source.size(); i++) {
-            this.tags.set(i, source.get(i).serialize());
+            this.tags.add(source.get(i).serialize());
         }
     }
 
@@ -267,8 +267,8 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
     @Override
     public NBTList copy() {
         List<NBT<?>> copy = new ArrayList<>(tags.size());
-        for (NBT<?> t : tags) {
-            copy.add(t.copy());
+        for (int i = 0; i < tags.size(); i++) {
+            copy.add(tags.get(i).copy());
         }
         return new NBTList(copy, tag);
     }

@@ -68,7 +68,7 @@ public class TypedList<W extends CompoundWrapper> implements Iterable<W> {
         int size = size();
         List<W> result = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            result.set(i, get(i));
+            result.add(get(i));
         }
         return result;
     }
