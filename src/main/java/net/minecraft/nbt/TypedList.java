@@ -35,11 +35,11 @@ public class TypedList<W extends CompoundWrapper> implements Iterable<W> {
     }
 
     public void push(W value) {
-        list.push(value.tag);
+        list.push(value.serialize());
     }
 
     public void set(int index, W value) {
-        list.set(index, value.tag);
+        list.set(index, value.serialize());
     }
 
     public W get(int index) {

@@ -40,7 +40,7 @@ public interface CompoundWrite extends CompoundWriteObsolete {
     }
 
     default <W extends CompoundWrapper> void set(KeyTyped<W> key, W value) {
-        setUnchecked(key, value.tag);
+        setUnchecked(key, value.serialize());
     }
 
     default void set(KeyList key, NBTList value) {
