@@ -2,6 +2,7 @@ package net.minecraft.nbt;
 
 import net.minecraft.nbt.key.*;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface CompoundWrite extends CompoundWriteObsolete {
@@ -49,6 +50,10 @@ public interface CompoundWrite extends CompoundWriteObsolete {
 
     default <W extends CompoundWrapper> void set(KeyTypedList<W> key, TypedList<W> value) {
         setUnchecked(key, value.list);
+    }
+
+    default <W extends CompoundWrapper> void set(KeyTypedList<W> key, List<W> value) {
+        setUnchecked(key, new NBTList(value));
     }
 
     default void set(KeyBoolean key, boolean value) {

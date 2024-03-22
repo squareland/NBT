@@ -21,6 +21,14 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
         this(new ArrayList<>(), Tag.END);
     }
 
+    public NBTList(List<? extends CompoundWrapper> source) {
+        this.tag = Tag.COMPOUND;
+        this.tags = new ArrayList<>(source.size());
+        for (int i = 0; i < source.size(); i++) {
+            this.tags.set(i, source.get(i).serialize());
+        }
+    }
+
     public NBTList(DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException {
         sizeTracker.read(296L);
 
