@@ -6,7 +6,7 @@
 
     <groupId>net.minecraft</groupId>
     <artifactId>nbt</artifactId>
-    <version>3.14</version>
+    <version>3.15</version>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
