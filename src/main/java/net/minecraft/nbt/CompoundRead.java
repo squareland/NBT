@@ -349,7 +349,7 @@ public interface CompoundRead extends CompoundReadObsolete {
     default byte[] get(KeyByteArray key, byte[] fallback) {
         NBT<?> tag = getUnchecked(key);
         if (tag instanceof NBTByteArray a) {
-            return a.getByteArray();
+            return a.get();
         }
         if (tag != null) {
             throw new TagMismatchException(key, Tag.BYTE_ARRAY, tag.getTag());
@@ -360,7 +360,7 @@ public interface CompoundRead extends CompoundReadObsolete {
     default byte[] get(KeyByteArray key, Supplier<byte[]> fallback) {
         NBT<?> tag = getUnchecked(key);
         if (tag instanceof NBTByteArray a) {
-            return a.getByteArray();
+            return a.get();
         }
         if (tag != null) {
             throw new TagMismatchException(key, Tag.BYTE_ARRAY, tag.getTag());
@@ -375,7 +375,7 @@ public interface CompoundRead extends CompoundReadObsolete {
     default int[] get(KeyIntArray key, int[] fallback) {
         NBT<?> tag = getUnchecked(key);
         if (tag instanceof NBTIntArray a) {
-            return a.getIntArray();
+            return a.get();
         }
         if (tag != null) {
             throw new TagMismatchException(key, Tag.INT_ARRAY, tag.getTag());
@@ -386,10 +386,36 @@ public interface CompoundRead extends CompoundReadObsolete {
     default int[] get(KeyIntArray key, Supplier<int[]> fallback) {
         NBT<?> tag = getUnchecked(key);
         if (tag instanceof NBTIntArray a) {
-            return a.getIntArray();
+            return a.get();
         }
         if (tag != null) {
             throw new TagMismatchException(key, Tag.INT_ARRAY, tag.getTag());
+        }
+        return fallback.get();
+    }
+
+    default long[] get(KeyLongArray key) {
+        return get(key, () -> new long[0]);
+    }
+
+    default long[] get(KeyLongArray key, long[] fallback) {
+        NBT<?> tag = getUnchecked(key);
+        if (tag instanceof NBTLongArray a) {
+            return a.get();
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.LONG_ARRAY, tag.getTag());
+        }
+        return fallback;
+    }
+
+    default long[] get(KeyLongArray key, Supplier<long[]> fallback) {
+        NBT<?> tag = getUnchecked(key);
+        if (tag instanceof NBTLongArray a) {
+            return a.get();
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.LONG_ARRAY, tag.getTag());
         }
         return fallback.get();
     }

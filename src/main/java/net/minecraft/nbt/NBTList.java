@@ -141,6 +141,11 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
         tags.add(new NBTIntArray(value));
     }
 
+    public void push(long[] value) {
+        validate(Tag.LONG_ARRAY);
+        tags.add(new NBTLongArray(value));
+    }
+
     public void push(NBTCompound value) {
         validate(Tag.COMPOUND);
         tags.add(value);
@@ -154,8 +159,9 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
     public void push(NBT<?> tag) {
         switch (tag) {
             case NBTEnd end -> {}
-            case NBTByteArray array -> push(array.getByteArray());
-            case NBTIntArray array -> push(array.getIntArray());
+            case NBTByteArray array -> push(array.get());
+            case NBTIntArray array -> push(array.get());
+            case NBTLongArray array -> push(array.get());
             case NBTCompound compound -> push(compound);
             case NBTList list -> push(list);
             case NBTLong number -> push(number.getLong());
@@ -215,12 +221,23 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
     public int[] getIntArray(int index) {
         NBT<?> tag = tags.get(index);
         if (tag instanceof NBTIntArray array) {
-            return array.getIntArray();
+            return array.get();
         }
         if (tag != null) {
             throw new TagMismatchException("list[" + index + "]", Tag.INT_ARRAY, tag.getTag());
         }
         return new int[0];
+    }
+
+    public long[] getLongArray(int index) {
+        NBT<?> tag = tags.get(index);
+        if (tag instanceof NBTLongArray array) {
+            return array.get();
+        }
+        if (tag != null) {
+            throw new TagMismatchException("list[" + index + "]", Tag.LONG_ARRAY, tag.getTag());
+        }
+        return new long[0];
     }
 
     public double getDouble(int index) {

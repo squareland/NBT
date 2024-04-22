@@ -6,34 +6,34 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public final class NBTIntArray extends NBT<int[]> {
-    private final int[] array;
+public final class NBTLongArray extends NBT<long[]> {
+    private final long[] array;
 
-    public NBTIntArray(int[] array) {
+    public NBTLongArray(long[] array) {
         this.array = array;
     }
 
-    public NBTIntArray(List<Integer> list) {
+    public NBTLongArray(List<Long> list) {
         this(toArray(list));
     }
 
-    public NBTIntArray(DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException {
+    public NBTLongArray(DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException {
         sizeTracker.read(192L);
         int i = input.readInt();
         sizeTracker.read(32 * i);
-        this.array = new int[i];
+        this.array = new long[i];
 
         for (int j = 0; j < i; ++j) {
-            this.array[j] = input.readInt();
+            this.array[j] = input.readLong();
         }
     }
 
-    private static int[] toArray(List<Integer> list) {
-        int[] array = new int[list.size()];
+    private static long[] toArray(List<Long> list) {
+        long[] array = new long[list.size()];
 
         for (int i = 0; i < list.size(); ++i) {
-            Integer integer = list.get(i);
-            array[i] = integer == null ? 0 : integer;
+            Long l = list.get(i);
+            array[i] = l == null ? 0 : l;
         }
 
         return array;
@@ -43,19 +43,19 @@ public final class NBTIntArray extends NBT<int[]> {
     void write(DataOutput output) throws IOException {
         output.writeInt(this.array.length);
 
-        for (int i : this.array) {
-            output.writeInt(i);
+        for (long i : this.array) {
+            output.writeLong(i);
         }
     }
 
     @Override
     public Tag getTag() {
-        return Tag.INT_ARRAY;
+        return Tag.LONG_ARRAY;
     }
 
     @Override
     public String toString() {
-        StringBuilder result = new StringBuilder("[I;");
+        StringBuilder result = new StringBuilder("[L;");
 
         for (int i = 0; i < this.array.length; ++i) {
             if (i != 0) {
@@ -69,20 +69,20 @@ public final class NBTIntArray extends NBT<int[]> {
     }
 
     @Override
-    public NBTIntArray copy() {
-        int[] array = new int[this.array.length];
+    public NBTLongArray copy() {
+        long[] array = new long[this.array.length];
         System.arraycopy(this.array, 0, array, 0, this.array.length);
-        return new NBTIntArray(array);
+        return new NBTLongArray(array);
     }
 
     @Override
-    public int[] get() {
+    public long[] get() {
         return array;
     }
 
     @Override
     public boolean equals(Object other) {
-        return super.equals(other) && Arrays.equals(this.array, ((NBTIntArray) other).array);
+        return super.equals(other) && Arrays.equals(this.array, ((NBTLongArray) other).array);
     }
 
     @Override

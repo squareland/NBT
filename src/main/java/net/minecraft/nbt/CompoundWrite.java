@@ -36,6 +36,10 @@ public interface CompoundWrite extends CompoundWriteObsolete {
         setUnchecked(key, new NBTIntArray(value));
     }
 
+    default void set(KeyLongArray key, long[] value) {
+        setUnchecked(key, new NBTLongArray(value));
+    }
+
     default void set(KeyCompound key, NBTCompound value) {
         setUnchecked(key, value);
     }

@@ -100,8 +100,4 @@ public final class NBTByteArray extends NBT<byte[]> {
     public int hashCode() {
         return super.hashCode() ^ Arrays.hashCode(data);
     }
-
-    public byte[] getByteArray() {
-        return data;
-    }
 }

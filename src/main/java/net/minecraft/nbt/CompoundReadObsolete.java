@@ -166,7 +166,7 @@ public interface CompoundReadObsolete {
     default byte[] getByteArray(String key, Supplier<byte[]> fallback) {
         NBT tag = get(key);
         if (tag instanceof NBTByteArray array) {
-            return array.getByteArray();
+            return array.get();
         }
         if (tag != null) {
             throw new TagMismatchException(key, Tag.BYTE_ARRAY, tag.getTag());
@@ -183,10 +183,27 @@ public interface CompoundReadObsolete {
     default int[] getIntArray(String key, Supplier<int[]> fallback) {
         NBT tag = get(key);
         if (tag instanceof NBTIntArray array) {
-            return array.getIntArray();
+            return array.get();
         }
         if (tag != null) {
             throw new TagMismatchException(key, Tag.INT_ARRAY, tag.getTag());
+        }
+        return fallback.get();
+    }
+
+    @Deprecated
+    default long[] getLongArray(String key) {
+        return getLongArray(key, () -> new long[0]);
+    }
+
+    @Deprecated
+    default long[] getLongArray(String key, Supplier<long[]> fallback) {
+        NBT tag = get(key);
+        if (tag instanceof NBTLongArray array) {
+            return array.get();
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.LONG_ARRAY, tag.getTag());
         }
         return fallback.get();
     }

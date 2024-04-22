@@ -55,6 +55,10 @@ public class Key<N extends NBT<?>> {
         return new KeyIntArray(name);
     }
 
+    public static KeyLongArray ofLongArray(String name) {
+        return new KeyLongArray(name);
+    }
+
     public static KeyCompound ofCompound(String name) {
         return new KeyCompound(name);
     }

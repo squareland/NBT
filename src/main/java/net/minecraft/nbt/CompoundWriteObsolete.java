@@ -84,6 +84,11 @@ public interface CompoundWriteObsolete {
     }
 
     @Deprecated
+    default void setLongArray(String key, long[] value) {
+        set(key, new NBTLongArray(value));
+    }
+
+    @Deprecated
     default void setBoolean(String key, boolean value) {
         setByte(key, (byte) (value ? 1 : 0));
     }
