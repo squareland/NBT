@@ -66,6 +66,32 @@ public interface CompoundRead extends CompoundReadObsolete {
         return null;
     }
 
+    default <E extends Enum<E>> E get(KeyEnum<E> key) {
+        return get(key, () -> key.wrap(new NBTByte((byte)0)));
+    }
+
+    default <E extends Enum<E>> E get(KeyEnum<E> key, Supplier<E> fallback) {
+        NBT<?> tag = getUnchecked(key);
+        if (tag instanceof NBTByte b) {
+            return key.wrap(b);
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.BYTE, tag.getTag());
+        }
+        return fallback.get();
+    }
+
+    default <E extends Enum<E>> E getOrNull(KeyEnum<E> key) {
+        NBT<?> tag = get(key.getName());
+        if (tag instanceof NBTByte b) {
+            return key.wrap(b);
+        }
+        if (tag != null) {
+            throw new TagMismatchException(key, Tag.BYTE, tag.getTag());
+        }
+        return null;
+    }
+
     default NBTList get(KeyList key) {
         return get(key, NBTList::new);
     }

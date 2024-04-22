@@ -48,6 +48,10 @@ public interface CompoundWrite extends CompoundWriteObsolete {
         setUnchecked(key, value.serialize());
     }
 
+    default <E extends Enum<E>> void set(KeyEnum<E> key, E value) {
+        setUnchecked(key, new NBTByte((byte) value.ordinal()));
+    }
+
     default void set(KeyList key, NBTList value) {
         setUnchecked(key, value);
     }
