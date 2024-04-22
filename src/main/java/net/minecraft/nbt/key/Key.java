@@ -63,6 +63,10 @@ public class Key<N extends NBT<?>> {
         return new KeyCompound(name);
     }
 
+    public static <E extends Enum<E>> KeyEnum<E> ofEnum(String name, Class<E> wrappedType) {
+        return new KeyEnum<E>(name, wrappedType);
+    }
+
     public static KeyList ofList(String name, Tag elementTag) {
         return new KeyList(name, elementTag);
     }
