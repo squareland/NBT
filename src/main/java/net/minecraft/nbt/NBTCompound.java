@@ -175,6 +175,20 @@ public final class NBTCompound extends NBT<Map<String, NBT<?>>> implements Compo
         return other instanceof NBTCompound c && Objects.equals(tags.entrySet(), c.tags.entrySet());
     }
 
+    public boolean deepEquals(NBTCompound other, boolean compareTagList) {
+        for (Map.Entry<String, NBT<?>> e : entrySet()) {
+            String key = e.getKey();
+            NBT<?> a = e.getValue();
+            NBT<?> b = other.get(key);
+
+            if (!deepEquals(a, b, compareTagList)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     @Override
     public int hashCode() {
         return super.hashCode() ^ tags.hashCode();

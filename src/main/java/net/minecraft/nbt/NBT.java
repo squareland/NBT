@@ -36,4 +36,24 @@ public sealed abstract class NBT<T> permits NBTByteArray, NBTCompound, NBTEnd, N
     interface Reader<R> {
         NBT<R> read(DataInput input, int depth, NBTSizeTracker sizeTracker) throws IOException;
     }
+
+    public static boolean deepEquals(NBT first, NBT second, boolean compareTagList) {
+        if (first == second) {
+            return true;
+        } else if (first == null) {
+            return true;
+        } else if (second == null) {
+            return false;
+        } else if (first.getClass().equals(second.getClass())) {
+            if (first instanceof NBTCompound fc) {
+                return fc.deepEquals((NBTCompound) second, compareTagList);
+            } else if (first instanceof NBTList fc && compareTagList) {
+                return fc.deepEquals((NBTList) second);
+            } else {
+                return first.equals(second);
+            }
+        } else {
+            return false;
+        }
+    }
 }

@@ -300,6 +300,31 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
         return other instanceof NBTList list && tag == list.tag && Objects.equals(tags, list.tags);
     }
 
+    public boolean deepEquals(NBTList other) {
+        if (isEmpty()) {
+            return other.isEmpty();
+        } else {
+            for (int i = 0; i < size(); ++i) {
+                NBT<?> a = get(i);
+                boolean found = false;
+
+                for (int j = 0; j < other.size(); ++j) {
+                    NBT<?> b = other.get(j);
+                    if (deepEquals(a, b, true)) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+    }
+
     @Override
     public int hashCode() {
         return super.hashCode() ^ tags.hashCode();
