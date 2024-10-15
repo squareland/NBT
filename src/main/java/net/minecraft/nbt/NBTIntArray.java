@@ -28,7 +28,10 @@ public final class NBTIntArray extends NBT<int[]> {
         sizeTracker.read(32 * i);
         byte[] bytes = new byte[4 * i];
         input.readFully(bytes);
-        this.array = (int[]) INT.get(bytes, 0);
+        this.array = new int[i];
+        for (int j = 0; j < i; j++) {
+            this.array[j] = (int) INT.get(bytes, 4 * j);
+        }
     }
 
     private static int[] toArray(List<Integer> list) {

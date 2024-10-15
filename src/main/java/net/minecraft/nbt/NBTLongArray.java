@@ -28,7 +28,10 @@ public final class NBTLongArray extends NBT<long[]> {
         sizeTracker.read(32 * i);
         byte[] bytes = new byte[8 * i];
         input.readFully(bytes);
-        this.array = (long[]) LONG.get(bytes, 0);
+        this.array = new long[i];
+        for (int j = 0; j < i; j++) {
+            this.array[j] = (long) LONG.get(bytes, 8 * j);
+        }
     }
 
     private static long[] toArray(List<Long> list) {
