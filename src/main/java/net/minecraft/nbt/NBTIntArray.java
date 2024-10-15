@@ -3,10 +3,15 @@ package net.minecraft.nbt;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
+import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.List;
 
 public final class NBTIntArray extends NBT<int[]> {
+    private static final VarHandle INT = MethodHandles.byteArrayViewVarHandle(int[].class, ByteOrder.BIG_ENDIAN);
+
     private final int[] array;
 
     public NBTIntArray(int[] array) {
@@ -21,11 +26,9 @@ public final class NBTIntArray extends NBT<int[]> {
         sizeTracker.read(192L);
         int i = input.readInt();
         sizeTracker.read(32 * i);
-        this.array = new int[i];
-
-        for (int j = 0; j < i; ++j) {
-            this.array[j] = input.readInt();
-        }
+        byte[] bytes = new byte[4 * i];
+        input.readFully(bytes);
+        this.array = (int[]) INT.get(bytes);
     }
 
     private static int[] toArray(List<Integer> list) {
