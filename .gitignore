@@ -1,4 +1,6 @@
 /.idea
+/.grad
 /out
 /target
+/build
 *.iml
