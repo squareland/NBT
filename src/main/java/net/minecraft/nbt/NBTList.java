@@ -174,13 +174,64 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
         }
     }
 
+    public void set(int index, byte[] value) {
+        validate(Tag.BYTE_ARRAY);
+        tags.set(index, new NBTByteArray(value));
+    }
+
+    public void set(int index, int[] value) {
+        validate(Tag.INT_ARRAY);
+        tags.set(index, new NBTIntArray(value));
+    }
+
+    public void set(int index, long[] value) {
+        validate(Tag.LONG_ARRAY);
+        tags.set(index, new NBTLongArray(value));
+    }
+
+    public void set(int index, NBTCompound value) {
+        validate(Tag.COMPOUND);
+        tags.set(index, value);
+    }
+
+    public void set(int index, NBTList value) {
+        validate(Tag.LIST);
+        tags.set(index, value);
+    }
+
+    public void set(int index, long value) {
+        validate(Tag.LONG);
+        tags.set(index, new NBTLong(value));
+    }
+
+    public void set(int index, int value) {
+        validate(Tag.INT);
+        tags.set(index, new NBTInt(value));
+    }
+
     public void set(int index, String value) {
         validate(Tag.STRING);
         tags.set(index, new NBTString(value));
     }
 
-    public void set(int index, NBT tag) {
-        throw new UnsupportedOperationException("Cannot set generic NBT tags in list");
+    public void set(int index, byte value) {
+        validate(Tag.BYTE);
+        tags.set(index, new NBTByte(value));
+    }
+
+    public void set(int index, short value) {
+        validate(Tag.SHORT);
+        tags.set(index, new NBTShort(value));
+    }
+
+    public void set(int index, double value) {
+        validate(Tag.DOUBLE);
+        tags.set(index, new NBTDouble(value));
+    }
+
+    public void set(int index, float value) {
+        validate(Tag.FLOAT);
+        tags.set(index, new NBTFloat(value));
     }
 
     public NBT remove(int index) {
