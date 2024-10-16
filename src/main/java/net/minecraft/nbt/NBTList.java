@@ -180,7 +180,7 @@ public final class NBTList extends NBT<List<NBT<?>>> implements Iterable<NBT<?>>
     }
 
     public void set(int index, NBT tag) {
-        throw new UnsupportedOperationException("Cannot est generic NBT tags in list");
+        throw new UnsupportedOperationException("Cannot set generic NBT tags in list");
     }
 
     public NBT remove(int index) {
